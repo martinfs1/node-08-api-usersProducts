@@ -1,1 +1,1 @@
-# node-06-restserver
+# node-08-api-users-products
