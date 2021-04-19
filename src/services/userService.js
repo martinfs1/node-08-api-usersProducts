@@ -4,6 +4,9 @@ const repository = new UserRepository();
 const findById = async (id) => {
   return await repository.findById(id);
 };
+const findByEmail = async (email) => {
+  return await repository.findByEmail(email)
+}
 const findAll = async (filter, options) => {
   return await repository.findAllWithPaginate(filter, options);
 };
@@ -17,8 +20,9 @@ const remove = async (id) => {
   return await repository.remove(id);
 };
 module.exports = {
-  findAll,
   findById,
+  findByEmail,
+  findAll,
   save,
   update,
   remove,

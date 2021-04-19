@@ -1,5 +1,5 @@
 const User = require("../models/users");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 class UserRepository {
   constructor() {}
@@ -16,6 +16,9 @@ class UserRepository {
   }
   async findById(id) {
     return await User.findById(id);
+  }
+  async findByEmail(email) {
+    return await User.findOne({ email });
   }
   async update(id, user) {
     return await User.findByIdAndUpdate(id, user, { new: true });
