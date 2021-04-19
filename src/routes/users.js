@@ -1,5 +1,8 @@
 const { Router } = require("express");
-const {check} = require('express-validator')
+const {
+  postRequestValidations,
+  putRequestValidations,
+} = require("../middlewares/users");
 const {
   getAllUsers,
   createUser,
@@ -10,10 +13,10 @@ const {
 
 const router = Router();
 
-router.post("/", createUser);
+router.post("/", postRequestValidations, createUser);
 router.get("/", getAllUsers);
 router.get("/:id", getUserByid);
-router.put("/:id", updateUser );
+router.put("/:id", putRequestValidations, updateUser);
 router.delete("/:id", deleteUser);
 
 module.exports = router;
