@@ -1,7 +1,8 @@
-const { check, validationResult } = require("express-validator");
+const { check } = require("express-validator");
 const AppError = require("../../errors/appError");
 const userService = require("../../services/userService");
 const { ROLES } = require("../../constants");
+const { validationResult } = require("../commons");
 
 const _nameRequired = check("name", "Name is required").not().isEmpty();
 const _lastNameRequired = check("lastName", "Last name is required")
@@ -38,22 +39,14 @@ const _optionalEmailExist = check("email")
       throw new AppError("Email already exist in db", 400);
     }
   });
-  const _idRequired = check('id').not().isEmpty();
-  const _idIsMongoDB = check("id").isMongoId()
-  const _idExist = check("id").custom(async (id = "") => {
-    const idFound = await userService.findById(id);
-    if (!idFound) {
-      throw new AppError("The id does not exist in DB", 400);
-    }
-  });
-
-const _validationResult = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    throw new AppError("Validation Errors:", 400, errors.errors);
+const _idRequired = check("id").not().isEmpty();
+const _idIsMongoDB = check("id").isMongoId();
+const _idExist = check("id").custom(async (id = "") => {
+  const idFound = await userService.findById(id);
+  if (!idFound) {
+    throw new AppError("The id does not exist in DB", 400);
   }
-  next();
-};
+});
 
 const postRequestValidations = [
   _nameRequired,
@@ -64,7 +57,7 @@ const postRequestValidations = [
   _passwordRequired,
   _roleValid,
   _dateValid,
-  _validationResult,
+  validationResult,
 ];
 const putRequestValidations = [
   _roleValid,
@@ -74,7 +67,7 @@ const putRequestValidations = [
   _idRequired,
   _idIsMongoDB,
   _idExist,
-  _validationResult,
+  validationResult,
 ];
 
 module.exports = {
